@@ -2,10 +2,14 @@ const express = require('express');
 const puppeteer = require('puppeteer');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.get('/data', async (req, res) => {
-  const browser = await puppeteer.launch({ headless: 'new' });
+  const browser = await puppeteer.launch({
+    headless: 'new',
+    args: ['--no-sandbox', '--disable-setuid-sandbox']
+  });
+
   const page = await browser.newPage();
   await page.goto('https://explorer.koii.live/address/CSHZ3Fh649Mw6KvpEKfRrkaWuuhM4udMqV2BvSy2tELq', {
     waitUntil: 'networkidle0',
